@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.caijiale</groupId>
-            <artifactId>my-rpc-easy</artifactId>
+            <artifactId>my-rpc-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

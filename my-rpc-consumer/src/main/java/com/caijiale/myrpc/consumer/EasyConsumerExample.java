@@ -3,7 +3,8 @@ package com.caijiale.myrpc.consumer;
 
 import com.caijiale.myrpc.common.model.User;
 import com.caijiale.myrpc.common.service.UserService;
-import com.caijiale.myrpc.proxy.ServiceProxyFactory;
+import com.caijiale.myrpc.core.proxy.ServiceProxyFactory;
+
 
 /**
  * 简易服务消费者示例
