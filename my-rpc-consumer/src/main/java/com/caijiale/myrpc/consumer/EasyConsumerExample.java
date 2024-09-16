@@ -3,6 +3,7 @@ package com.caijiale.myrpc.consumer;
 
 import com.caijiale.myrpc.common.model.User;
 import com.caijiale.myrpc.common.service.UserService;
+import com.caijiale.myrpc.proxy.ServiceProxyFactory;
 
 /**
  * 简易服务消费者示例
@@ -10,8 +11,9 @@ import com.caijiale.myrpc.common.service.UserService;
 public class EasyConsumerExample {
 
     public static void main(String[] args) {
-        // todo 需要获取 UserService 的实现类对象
-        UserService userService = null;
+        // 动态代理
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
+
         User user = new User();
         user.setName("yupi");
         // 调用
