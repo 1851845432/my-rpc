@@ -14,4 +14,10 @@ public interface UserService {
      * @return
      */
     User getUser(User user);
+    /**
+     * 新方法 获取数字测试
+     */
+    default int getNum(){
+        return 1;
+    }
 }
