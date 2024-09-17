@@ -15,7 +15,7 @@ public class ConsumerExample {
         RpcConfig rpc = ConfigUtils.loadConfig(RpcConfig.class, "rpc");
         System.out.println(rpc);
         // 动态代理
-        UserService userService = ServiceProxyFactory.getMockProxy(UserService.class);
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
 
         User user = new User();
         user.setName("cjl");
@@ -26,6 +26,5 @@ public class ConsumerExample {
         } else {
             System.out.println("user == null");
         }
-        System.out.println(userService.getNum());
     }
 }

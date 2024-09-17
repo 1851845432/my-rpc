@@ -2,7 +2,9 @@ package com.caijiale.myrpc.core.server;
 
 
 
+import com.caijiale.myrpc.core.RpcApplication;
 import com.caijiale.myrpc.core.serializer.Serializer;
+import com.caijiale.myrpc.core.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -11,6 +13,7 @@ import com.caijiale.myrpc.core.model.RpcRequest;
 import com.caijiale.myrpc.core.model.RpcResponse;
 import com.caijiale.myrpc.core.registry.LocalRegistry;
 import com.caijiale.myrpc.core.serializer.JdkSerializer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -18,12 +21,13 @@ import java.lang.reflect.Method;
 /**
  * HTTP 请求处理
  */
+@Slf4j
 public class HttpServerHandler implements Handler<HttpServerRequest> {
 
     @Override
     public void handle(HttpServerRequest request) {
         // 指定序列化器
-        final Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 记录日志
         System.out.println("Received request: " + request.method() + " " + request.uri());
@@ -35,7 +39,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
             try {
                 rpcRequest = serializer.deserialize(bytes, RpcRequest.class);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("反序列化失败，检查配置是否正确，当前序列化为：{}", RpcApplication.getRpcConfig().getSerializer(),e);
             }
 
             // 构造响应结果对象

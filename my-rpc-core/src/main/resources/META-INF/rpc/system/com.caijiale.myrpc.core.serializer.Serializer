@@ -1,0 +1,4 @@
+jdk=com.caijiale.myrpc.core.serializer.JdkSerializer
+json=com.caijiale.myrpc.core.serializer.JsonSerializer
+hessian=com.caijiale.myrpc.core.serializer.HessianSerializer
+kryo=com.caijiale.myrpc.core.serializer.KryoSerializer

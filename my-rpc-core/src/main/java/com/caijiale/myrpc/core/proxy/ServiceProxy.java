@@ -2,10 +2,13 @@ package com.caijiale.myrpc.core.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.caijiale.myrpc.core.RpcApplication;
 import com.caijiale.myrpc.core.model.RpcRequest;
 import com.caijiale.myrpc.core.serializer.JdkSerializer;
 import com.caijiale.myrpc.core.serializer.Serializer;
 import com.caijiale.myrpc.core.model.RpcResponse;
+import com.caijiale.myrpc.core.serializer.SerializerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.lang.reflect.Method;
 /**
  * 服务代理（JDK 动态代理）
  */
+@Slf4j
 public class ServiceProxy implements InvocationHandler {
 
     /**
@@ -26,7 +30,7 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 指定序列化器
-        Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 构造请求
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -49,7 +53,7 @@ public class ServiceProxy implements InvocationHandler {
                 return rpcResponse.getData();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("反序列化失败，检查配置是否正确，当前序列化为：{}", RpcApplication.getRpcConfig().getSerializer(),e);
         }
 
         return null;
