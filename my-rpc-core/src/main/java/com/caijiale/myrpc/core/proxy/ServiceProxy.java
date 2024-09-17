@@ -3,7 +3,12 @@ package com.caijiale.myrpc.core.proxy;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.caijiale.myrpc.core.RpcApplication;
+import com.caijiale.myrpc.core.config.RpcConfig;
+import com.caijiale.myrpc.core.constant.RpcConstant;
 import com.caijiale.myrpc.core.model.RpcRequest;
+import com.caijiale.myrpc.core.model.ServiceMetaInfo;
+import com.caijiale.myrpc.core.registry.Registry;
+import com.caijiale.myrpc.core.registry.RegistryFactory;
 import com.caijiale.myrpc.core.serializer.JdkSerializer;
 import com.caijiale.myrpc.core.serializer.Serializer;
 import com.caijiale.myrpc.core.model.RpcResponse;
@@ -14,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 服务代理（JDK 动态代理）
@@ -43,8 +49,20 @@ public class ServiceProxy implements InvocationHandler {
             // 序列化
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             // 发送请求
-            // todo 注意，这里地址被硬编码了（需要使用注册中心和服务发现机制解决）
-            try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")
+            RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
+            // 服务发现
+            ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+            serviceMetaInfo.setServiceName(rpcRequest.getServiceName());
+            serviceMetaInfo.setServiceVersion(RpcConstant.DEFAULT_SERVICE_VERSION);
+            List<ServiceMetaInfo> serviceMetaInfos = registry.serviceDiscovery(serviceMetaInfo.getServiceKey());
+            if (serviceMetaInfos == null || serviceMetaInfos.size() == 0) {
+                throw new RuntimeException("不存在该服务");
+            }
+            // 负载均衡
+            //暂时取第一个服务
+            ServiceMetaInfo selectedServiceMetaInfo =  serviceMetaInfos.get(0);
+            try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
                     .body(bodyBytes)
                     .execute()) {
                 byte[] result = httpResponse.bodyBytes();

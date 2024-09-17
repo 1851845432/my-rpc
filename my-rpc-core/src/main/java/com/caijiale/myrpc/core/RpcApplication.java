@@ -1,5 +1,8 @@
 package com.caijiale.myrpc.core;
 
+import com.caijiale.myrpc.core.config.RegistryConfig;
+import com.caijiale.myrpc.core.registry.Registry;
+import com.caijiale.myrpc.core.registry.RegistryFactory;
 import lombok.extern.slf4j.Slf4j;
 import com.caijiale.myrpc.core.config.RpcConfig;
 import com.caijiale.myrpc.core.constant.RpcConstant;
@@ -22,6 +25,11 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", newRpcConfig.toString());
+        //注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config = {}", registryConfig);
     }
 
     /**
