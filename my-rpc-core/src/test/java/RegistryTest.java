@@ -67,4 +67,9 @@ public class RegistryTest {
         System.out.println(serviceMetaInfoList);
         Assert.assertNotNull(serviceMetaInfoList);
     }
+    @Test
+    public void heartBeat() throws Exception {
+        register();
+        Thread.sleep(60*1000L);
+    }
 }
