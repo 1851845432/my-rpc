@@ -9,8 +9,7 @@ import com.caijiale.myrpc.core.model.ServiceMetaInfo;
 import com.caijiale.myrpc.core.registry.LocalRegistry;
 import com.caijiale.myrpc.core.registry.Registry;
 import com.caijiale.myrpc.core.registry.RegistryFactory;
-import com.caijiale.myrpc.core.server.HttpServer;
-import com.caijiale.myrpc.core.server.VertxHttpServer;
+import com.caijiale.myrpc.core.server.tcp.VertxTcpServer;
 
 /**
  * 服务提供者示例
@@ -39,8 +38,8 @@ public class ProviderExample {
             throw new RuntimeException(e);
         }
 
-        // 启动 web 服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        // 启动 TCP 服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(8080);
     }
 }
