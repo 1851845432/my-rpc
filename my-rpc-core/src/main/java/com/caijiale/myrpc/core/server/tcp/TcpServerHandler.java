@@ -10,17 +10,19 @@ import com.caijiale.myrpc.core.registry.LocalRegistry;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetSocket;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-
+@Slf4j
 public class TcpServerHandler implements Handler<NetSocket> {
 
     @Override
     public void handle(NetSocket netSocket) {
         // 处理连接
-        netSocket.handler(buffer -> {
+        TcpBufferHandlerWrapper bufferHandlerWrapper = new TcpBufferHandlerWrapper(buffer -> {
             // 接受请求，解码
+            log.info("Received request successfully");
             ProtocolMessage<RpcRequest> protocolMessage;
             try {
                 protocolMessage = (ProtocolMessage<RpcRequest>) ProtocolMessageDecoder.decode(buffer);
@@ -28,7 +30,7 @@ public class TcpServerHandler implements Handler<NetSocket> {
                 throw new RuntimeException("协议消息解码错误");
             }
             RpcRequest rpcRequest = protocolMessage.getBody();
-
+            log.info("Received request: " + rpcRequest);
             // 处理请求
             // 构造响应结果对象
             RpcResponse rpcResponse = new RpcResponse();
@@ -54,9 +56,11 @@ public class TcpServerHandler implements Handler<NetSocket> {
             try {
                 Buffer encode = ProtocolMessageEncoder.encode(responseProtocolMessage);
                 netSocket.write(encode);
+                log.info("Response sent successfully");
             } catch (IOException e) {
                 throw new RuntimeException("协议消息编码错误");
             }
         });
+        netSocket.handler(bufferHandlerWrapper);
     }
 }

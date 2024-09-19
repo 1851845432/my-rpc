@@ -1,5 +1,6 @@
 package com.caijiale.myrpc.core.server.tcp;
 
+
 import com.caijiale.myrpc.core.server.HttpServer;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -7,6 +8,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.parsetools.RecordParser;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 public class VertxTcpServer implements HttpServer {
@@ -20,23 +22,7 @@ public class VertxTcpServer implements HttpServer {
         NetServer server = vertx.createNetServer();
 
         // 处理请求
-//        server.connectHandler(new TcpServerHandler());
-        server.connectHandler(socket -> {
-                String testMessage = "Hello, server!Hello, server!Hello, server!Hello, server!";
-                int messageLength = testMessage.getBytes().length;
-                RecordParser recordParser = RecordParser.newFixed(messageLength);
-                recordParser.setOutput(new Handler<Buffer>() {
-                    @Override
-                    public void handle(Buffer buffer) {
-                        String str = new String(buffer.getBytes(0, messageLength));
-                        System.out.println(str);
-                        if (testMessage.equals(str)) {
-                            System.out.println("good");
-                        }
-                    }
-                });
-                socket.handler(recordParser);
-        });
+        server.connectHandler(new TcpServerHandler());
 
         // 启动 TCP 服务器并监听指定端口
         server.listen(port, result -> {

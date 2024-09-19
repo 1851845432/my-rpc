@@ -60,7 +60,7 @@ public class HttpServiceProxy implements InvocationHandler {
             }
             // 负载均衡
             //暂时取第一个服务
-            ServiceMetaInfo selectedServiceMetaInfo =  serviceMetaInfos.get(0);
+            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfos.get(0);
             try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
                     .body(bodyBytes)
                     .execute()) {
@@ -70,7 +70,7 @@ public class HttpServiceProxy implements InvocationHandler {
                 return rpcResponse.getData();
             }
         } catch (IOException e) {
-            log.error("反序列化失败，检查配置是否正确，当前序列化为：{}", RpcApplication.getRpcConfig().getSerializer(),e);
+            log.error("反序列化失败，检查配置是否正确，当前序列化为：{}", RpcApplication.getRpcConfig().getSerializer(), e);
         }
 
         return null;
