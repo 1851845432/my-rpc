@@ -26,7 +26,7 @@ public class MockServiceProxy implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-       //获取方法的返回类型，根据返回类型生成默认的调用对象
+        //获取方法的返回类型，根据返回类型生成默认的调用对象
         Class<?> returnType = method.getReturnType();
         log.info("Mock invoke method: {}", method.getName());
         return getDefaultObject(returnType);
@@ -34,22 +34,22 @@ public class MockServiceProxy implements InvocationHandler {
 
     private Object getDefaultObject(Class<?> returnType) {
         //基本类型
-        if(returnType.isPrimitive()){
-            if(returnType == int.class){
+        if (returnType.isPrimitive()) {
+            if (returnType == int.class) {
                 return 0;
-            }else if(returnType == long.class){
+            } else if (returnType == long.class) {
                 return 0L;
-            }else if(returnType == short.class){
-                return (short)0;
-            }else if(returnType == byte.class){
-                return (byte)0;
-            }else if(returnType == float.class){
+            } else if (returnType == short.class) {
+                return (short) 0;
+            } else if (returnType == byte.class) {
+                return (byte) 0;
+            } else if (returnType == float.class) {
                 return 0.0f;
-            }else if(returnType == double.class){
+            } else if (returnType == double.class) {
                 return 0.0d;
-            }else if(returnType == char.class){
+            } else if (returnType == char.class) {
                 return '\u0000';
-            }else if(returnType == boolean.class){
+            } else if (returnType == boolean.class) {
                 return false;
             }
         }

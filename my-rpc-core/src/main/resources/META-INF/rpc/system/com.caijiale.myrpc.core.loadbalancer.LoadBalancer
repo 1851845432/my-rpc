@@ -1,0 +1,3 @@
+roundRobin=com.caijiale.myrpc.core.loadbalancer.RoundRobinLoadBalancer
+random=com.caijiale.myrpc.core.loadbalancer.RandomLoadBalancer
+consistentHash=com.caijiale.myrpc.core.loadbalancer.ConsistentHashLoadBalancer

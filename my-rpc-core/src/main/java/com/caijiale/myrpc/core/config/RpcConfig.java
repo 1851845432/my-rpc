@@ -1,5 +1,7 @@
 package com.caijiale.myrpc.core.config;
 
+import com.caijiale.myrpc.core.loadbalancer.LoadBalancer;
+import com.caijiale.myrpc.core.loadbalancer.LoadBalancerKeys;
 import com.caijiale.myrpc.core.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -23,7 +25,7 @@ public class RpcConfig {
      * 服务器主机名
      */
     private String serverHost = "localhost";
-    
+
     /**
      * 服务器端口号
      */
@@ -42,4 +44,8 @@ public class RpcConfig {
      * 注册中心配置
      */
     private RegistryConfig registryConfig = new RegistryConfig();
+    /**
+     * 负载均衡器
+     */
+    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
 }
