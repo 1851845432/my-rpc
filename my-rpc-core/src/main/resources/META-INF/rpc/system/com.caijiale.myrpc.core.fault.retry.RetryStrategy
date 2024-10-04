@@ -1,0 +1,2 @@
+no=com.caijiale.myrpc.core.fault.retry.NoRetryStrategy
+fixedInterval=com.caijiale.myrpc.core.fault.retry.FixedIntervalRetryStrategy

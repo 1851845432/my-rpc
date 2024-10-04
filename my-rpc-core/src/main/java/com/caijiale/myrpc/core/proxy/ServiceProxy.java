@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.caijiale.myrpc.core.RpcApplication;
 import com.caijiale.myrpc.core.config.RpcConfig;
 import com.caijiale.myrpc.core.constant.RpcConstant;
+import com.caijiale.myrpc.core.fault.retry.RetryStrategy;
+import com.caijiale.myrpc.core.fault.retry.RetryStrategyFactory;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancer;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancerFactory;
 import com.caijiale.myrpc.core.model.RpcRequest;
@@ -58,12 +60,16 @@ public class ServiceProxy implements InvocationHandler {
             HashMap<String, Object> requesParams = new HashMap<>();
             requesParams.put("methodName", rpcRequest.getMethodName());
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requesParams, serviceMetaInfoList);
-            // 发送 TCP 请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            // 使用重试机制
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    // 发送 TCP 请求
+                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+            );
             log.info("调用成功 " + rpcResponse.getData());
             return rpcResponse.getData();
         } catch (Exception e) {
-            throw new RuntimeException("调用失败");
+            throw new RuntimeException("调用失败", e);
         }
     }
 }

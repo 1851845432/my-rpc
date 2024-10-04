@@ -8,6 +8,7 @@ import io.vertx.core.parsetools.RecordParser;
 
 /**
  * 装饰者模式（使用 recordParser 对原有的 buffer 处理能力进行增强）
+ * @author MAKABAKA
  */
 public class TcpBufferHandlerWrapper implements Handler<Buffer> {
 

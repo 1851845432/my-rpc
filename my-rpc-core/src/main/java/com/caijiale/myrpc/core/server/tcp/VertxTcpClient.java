@@ -25,11 +25,11 @@ public class VertxTcpClient {
     /**
      * 发送请求
      *
-     * @param rpcRequest
-     * @param serviceMetaInfo
-     * @return
-     * @throws InterruptedException
-     * @throws ExecutionException
+     * @param rpcRequest     请求
+     * @param serviceMetaInfo 服务元信息
+     * @return 响应
+     * @throws InterruptedException  中断异常
+     * @throws ExecutionException  执行异常
      */
     public static RpcResponse doRequest(RpcRequest rpcRequest, ServiceMetaInfo serviceMetaInfo) throws InterruptedException, ExecutionException {
         // 发送 TCP 请求
@@ -40,6 +40,7 @@ public class VertxTcpClient {
                 result -> {
                     if (!result.succeeded()) {
                         System.err.println("Failed to connect to TCP server");
+                        responseFuture.completeExceptionally(new RuntimeException("服务节点异常，无法连接！"));
                         return;
                     }
                     log.info("Connected to TCP server successfully " + serviceMetaInfo.getServiceHost() + ":" + serviceMetaInfo.getServicePort());

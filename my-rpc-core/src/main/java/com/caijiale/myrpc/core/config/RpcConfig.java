@@ -1,5 +1,6 @@
 package com.caijiale.myrpc.core.config;
 
+import com.caijiale.myrpc.core.fault.retry.RetryStrategyKeys;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancer;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancerKeys;
 import com.caijiale.myrpc.core.serializer.SerializerKeys;
@@ -48,4 +49,8 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyKeys.NO;
 }
