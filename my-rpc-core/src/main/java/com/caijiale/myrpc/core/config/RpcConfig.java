@@ -1,6 +1,7 @@
 package com.caijiale.myrpc.core.config;
 
 import com.caijiale.myrpc.core.fault.retry.RetryStrategyKeys;
+import com.caijiale.myrpc.core.fault.tolerant.TolerantStrategyKeys;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancer;
 import com.caijiale.myrpc.core.loadbalancer.LoadBalancerKeys;
 import com.caijiale.myrpc.core.serializer.SerializerKeys;
@@ -53,4 +54,8 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.NO;
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }

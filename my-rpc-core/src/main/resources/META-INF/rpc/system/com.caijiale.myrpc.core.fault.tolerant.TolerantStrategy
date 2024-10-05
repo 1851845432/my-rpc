@@ -1,0 +1,4 @@
+failBack=com.caijiale.myrpc.core.fault.tolerant.FailBackTolerantStrategy
+failFast=com.caijiale.myrpc.core.fault.tolerant.FailFastTolerantStrategy
+failOver=com.caijiale.myrpc.core.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.caijiale.myrpc.core.fault.tolerant.FailSafeTolerantStrategy
