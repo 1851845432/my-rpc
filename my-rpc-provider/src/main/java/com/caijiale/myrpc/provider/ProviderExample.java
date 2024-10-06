@@ -23,7 +23,7 @@ public class ProviderExample {
     public static void main(String[] args) {
         // 服务注册信息
         UserService userService = new UserServiceImpl();
-        ServiceRegisterInfo<UserService> serviceRegisterInfo = new ServiceRegisterInfo<>("UserService", userService.getClass());
+        ServiceRegisterInfo<UserService> serviceRegisterInfo = new ServiceRegisterInfo<>(UserService.class.getName(), userService.getClass());
 
         // 服务提供者初始化
         ProviderBootstrap.init(List.of(serviceRegisterInfo));
